@@ -4,26 +4,23 @@ const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"];
 
 export default function App() {
   const [inputValue, setInputValue] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState(fruits); // show all initially
   const [loading, setLoading] = useState(false);
 
-  // Simulate async search with debounce
   useEffect(() => {
-    if (!inputValue) {
-      setSuggestions([]);
-      return;
-    }
-
     setLoading(true);
 
     const timer = setTimeout(() => {
-      // async filter simulation
-      const filtered = fruits.filter((fruit) =>
-        fruit.toLowerCase().includes(inputValue.toLowerCase())
-      );
-      setSuggestions(filtered);
+      if (!inputValue) {
+        setSuggestions(fruits); // all fruits when input empty
+      } else {
+        const filtered = fruits.filter((fruit) =>
+          fruit.toLowerCase().includes(inputValue.toLowerCase())
+        );
+        setSuggestions(filtered);
+      }
       setLoading(false);
-    }, 300); // debounce delay
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [inputValue]);
